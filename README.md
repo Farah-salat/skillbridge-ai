@@ -4,7 +4,7 @@
 **Program:** Power Learn Project (PLP) × ILO PROSPECTS Mini-Hackathon  
 
 ## 🔗 Project Links
-* **Live Application:** [Netlify App] (skillbridge-ai-kenya.netlify.app)
+* **Live Application:** [Netlify App](https://netlify.app)
 * **Pitch Deck:** [Google Slides Presentation] https://docs.google.com/presentation/d/1BgB5kNN_S2ry6rXqSfgQaEhoXOhI6ynMl6knaIsANJw/edit?usp=sharing
 
 ## 📋 Overview
