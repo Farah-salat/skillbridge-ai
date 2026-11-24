@@ -5,7 +5,7 @@
 
 ## 🔗 Project Links
 * **Live Application:** [Netlify App](https://skillbridge-ai-kenya.netlify.app)
-* **Pitch Deck:** [Google Slides Presentation] https://docs.google.com/presentation/d/1BgB5kNN_S2ry6rXqSfgQaEhoXOhI6ynMl6knaIsANJw/edit?usp=sharing
+* **Pitch Deck:** [Google Slides Presentation] (https://docs.google.com/presentation/d/1BgB5kNN_S2ry6rXqSfgQaEhoXOhI6ynMl6knaIsANJw/edit?usp=sharing)
 
 ## 📋 Overview
 **SkillBridge AI** converts undocumented professional experience into verified proof of competency for skilled refugees in Kenya.
