@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SkillBridge AI</title>
+<style>
+:root{--navy:#0F172A;--teal:#0284C7;--em:#10B981;--bg:#F1F5F9;--card:#fff;--tx:#0F172A;--mut:#475569;--bd:#E2E8F0;--soft:#E0F2FE;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1220;--card:#162033;--tx:#F1F5F9;--mut:#94A3B8;--bd:#2A3750;--soft:#0C2A40;color-scheme:dark}}
+*{box-sizing:border-box}html{scroll-padding-top:70px}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5}
+header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:5}
+.bar{max-width:1000px;margin:auto;display:flex;align-items:center;gap:12px;padding:10px 16px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:18px;display:flex;gap:8px;align-items:center}.logo i{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--teal),var(--em));display:inline-block}
+nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav button{background:none;border:0;color:#CBD5E1;padding:8px 12px;border-radius:8px;font:600 14px inherit;cursor:pointer}
+nav button.on{background:var(--teal);color:#fff}
+main{max-width:1000px;margin:auto;padding:16px}
+.hero{background:linear-gradient(135deg,#0F172A,#0c4a6e);color:#fff;border-radius:16px;padding:32px 22px;margin-bottom:18px}
+.hero h1{margin:0 0 8px;font-size:clamp(26px,5vw,40px);line-height:1.15}.hero p{color:#CBD5E1;max-width:620px;margin:0 0 18px}
+.btn{border:0;border-radius:10px;padding:11px 18px;font:700 14px inherit;cursor:pointer;background:var(--teal);color:#fff;margin:0 8px 8px 0}
+.btn.em{background:var(--em);color:#04271c}.btn.ghost{background:transparent;color:inherit;border:1.5px solid currentColor}.btn:hover{filter:brightness(1.08)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:16px}
+h2{margin:0 0 4px;font-size:21px}.sub{color:var(--mut);margin:0 0 16px;font-size:14px}
+.steps{display:flex;gap:6px;margin-bottom:16px}.steps div{flex:1;text-align:center;padding:8px 4px;border-radius:8px;background:var(--card);border:1px solid var(--bd);font-size:13px;font-weight:600;color:var(--mut)}
+.steps .on{background:var(--teal);color:#fff;border-color:var(--teal)}.steps .done{background:var(--em);color:#04271c;border-color:var(--em)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:640px){.grid{grid-template-columns:1fr}.steps div span{display:none}}
+label{display:block;font-weight:600;font-size:13px;margin-bottom:4px}
+input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:9px;background:var(--card);color:var(--tx);font:15px inherit}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--teal);border-color:var(--teal)}
+.drop{border:2px dashed var(--teal);border-radius:12px;padding:18px;text-align:center;cursor:pointer;background:var(--soft);color:var(--tx);margin-top:6px}
+.ok{color:var(--em);font-weight:700}.err{color:#DC2626;font-size:13px;margin:6px 0}
+.q{border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:12px}.q b{display:block;margin-bottom:8px}
+.q label{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;margin-bottom:6px;cursor:pointer;font-weight:500}
+.q input{width:auto;margin-top:4px}.tag{font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.05em}
+.prog{height:10px;background:var(--bd);border-radius:9px;overflow:hidden;margin:14px 0}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--em));transition:width 1.5s linear}
+.pass{border:2px solid var(--em);border-radius:16px;background:var(--card);overflow:hidden}
+.pass .top{background:var(--navy);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.badge{background:var(--em);color:#04271c;font-weight:800;border-radius:99px;padding:4px 12px;font-size:12px}
+.pass .body{padding:18px;display:grid;grid-template-columns:1fr auto;gap:18px}@media(max-width:640px){.pass .body{grid-template-columns:1fr}}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:6px 10px;font-size:14px}.kv span{color:var(--mut)}
+.score{font-size:42px;font-weight:800;color:var(--em);line-height:1}
+.seal{text-align:center;font-size:12px;color:var(--mut)}.seal svg{width:130px;height:130px;background:#fff;padding:6px;border-radius:8px;border:1px solid var(--bd)}
+.bridge{margin:0 18px 18px;padding:12px 14px;border-left:4px solid var(--teal);background:var(--soft);border-radius:8px;font-size:14px}
+.bd{margin:0 18px 14px;font-size:14px}.bd div{padding:4px 0;border-bottom:1px solid var(--bd)}
+.sdg{margin:0 18px 18px;font-size:13px;color:var(--mut)}
+.row{display:flex;gap:8px;flex-wrap:wrap}.pc{border:1px solid var(--bd);border-radius:12px;padding:14px;background:var(--card)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.hide{display:none!important}.note{font-size:12px;color:var(--mut);margin-top:10px}
+@media print{header,.hero,.noprint,.steps,nav,.note{display:none!important}body{background:#fff}.card{border:0;padding:0}main{padding:0}}
+</style></head><body>
+<header><div class="bar"><div class="logo"><i></i>SkillBridge AI</div>
+<nav><button id="t-cand" class="on" onclick="tab('cand')">Candidate Portal</button><button id="t-emp" onclick="tab('emp')">Employer Verification</button><button id="t-samp" onclick="tab('samp')">Sample Profiles</button></nav></div></header>
+<main>
+<section id="v-cand">
+<div class="hero noprint"><h1>Turn Lost Paperwork Into Verified Opportunity.</h1>
+<p>SkillBridge AI helps skilled refugees in Dadaab, Kakuma and Nairobi prove what they can do, even when certificates are missing, by mapping practical competency to Kenyan KNQA levels.</p>
+<button class="btn" onclick="startFresh()">Start Skills Verification</button><button class="btn em" onclick="loadSample(0)">Try Sample Refugee Profile</button>
+<div class="note" style="color:#94A3B8">Supporting SDG 4 (Quality Education) and SDG 8 (Decent Work). Hackathon prototype: scoring is simulated.</div></div>
+<div class="steps" id="steps"><div id="s1" class="on">1 <span>Experience</span></div><div id="s2">2 <span>Assessment</span></div><div id="s3">3 <span>Passport</span></div></div>
+
+<div id="p1" class="card"><h2>Experience &amp; Prior Learning</h2><p class="sub">Tell us about your work history. No certificates needed.</p>
+<div class="grid">
+<div><label for="name">Full Name</label><input id="name" placeholder="e.g. Amina Hassan"></div>
+<div><label for="loc">Location / Settlement</label><select id="loc"><option>Dadaab</option><option>Kakuma</option><option>Nairobi</option><option>Garissa</option></select></div>
+<div><label for="prof">Target Profession</label><select id="prof"></select></div>
+<div><label for="yrs">Years of Experience</label><input id="yrs" type="number" min="0" max="40" placeholder="4"></div>
+<div style="grid-column:1/-1"><label for="role">Previous Institution / Role</label><input id="role" placeholder="e.g. University of Mogadishu, IT Lecturer"></div>
+<div style="grid-column:1/-1"><label for="skills">Describe Your Practical Skills &amp; Work History</label><textarea id="skills" rows="5" placeholder="Projects, tools, people you trained, responsibilities..."></textarea></div></div>
+<div class="drop" id="drop" onclick="file.click()"><div id="dtxt">Optional: tap to upload any PDF or image (ID, letter, photo of a certificate)</div></div>
+<input type="file" id="file" class="hide" accept="application/pdf,image/*">
+<div id="e1" class="err"></div>
+<button class="btn" onclick="toStep2()">Continue to Competency Assessment</button></div>
+
+<div id="p2" class="card hide"><h2 id="qh">Competency Assessment</h2><p class="sub">Answer 3 scenario-based questions for your chosen field.</p>
+<div id="qs"></div><div id="e2" class="err"></div>
+<div id="evalbox" class="hide"><b>AI Evaluating Competency &amp; Mapping to Kenyan KNQA Standards...</b><div class="prog"><i id="pb"></i></div></div>
+<div id="qbtn"><button class="btn ghost" style="color:var(--teal)" onclick="go(1)">Back</button><button class="btn" onclick="submitA()">Submit for Evaluation</button></div></div>
+
+<div id="p3" class="hide"><div class="card" id="pcard"></div>
+<div class="noprint"><button class="btn em" id="savebtn" onclick="saveDir()">Save to Employer Directory</button><button class="btn" onclick="window.print()">Print / Download Passport</button><button class="btn ghost" style="color:var(--teal)" onclick="startFresh()">New Candidate</button><div id="sv" class="ok"></div></div></div>
+</section>
+
+<section id="v-emp" class="hide">
+<div class="card"><h2>Employer Verification Portal</h2><p class="sub">Enter a Verification ID to confirm a candidate’s verified skills. Try SB-KE-2026-8492.</p>
+<div class="row"><input id="vid" style="max-width:320px" placeholder="SB-KE-2026-8492" onkeydown="if(event.key==='Enter')lookup()"><button class="btn" onclick="lookup()">Verify</button></div><div id="ve" class="err"></div></div>
+<div id="vres"></div>
+<div class="card"><h2>Employer Directory</h2><p class="sub">Sample IDs and candidates saved from this session. Tap to verify.</p><div id="dirl" class="row"></div></div>
+</section>
+
+<section id="v-samp" class="hide"><div class="card"><h2>Sample Profiles</h2><p class="sub">Verified demonstration profiles representing displaced professionals across Kenya. Load one into the intake form or view its verified passport.</p><div class="pgrid" id="sg"></div></div></section>
+</main>
+<script>
+const PROFS=["Software & Cloud Tech","Healthcare & Nursing","Accounting & Finance","Education & Teaching","Supply Chain & Logistics"];
+const Q={
+"Software & Cloud Tech":[["Debugging","A production web app slows sharply when many users log in. What do you check first?",["Rewrite the app in another language","Check logs and database queries for slow or repeated calls","Ask users to log in less often","Add more colours to the UI"],1],
+["Cloud","You must host a small school’s website with low cost and high uptime. Best choice?",["A managed cloud service with backups and monitoring","A laptop left running in an office","Email the files to students","Free hosting with no backups"],0],
+["Security","A teammate wants to store user passwords as plain text “for simplicity”. You should:",["Agree, it is faster","Hash and salt passwords and never store plain text","Encrypt them with a key in the code","Store them in a spreadsheet"],1]],
+"Healthcare & Nursing":[["Triage","Three patients arrive: a child with mild cough, an adult with chest pain and sweating, and a sprained ankle. Who is seen first?",["Child with cough","Sprained ankle","Adult with chest pain","First to arrive"],2],
+["Infection control","Before and after examining each patient, the most effective basic step is:",["Wearing perfume","Hand hygiene with soap or alcohol rub","Opening a window","Using the same gloves all day"],1],
+["Medication safety","A prescribed dose looks unusually high for the patient’s weight. You:",["Give it, doctors are always right","Halve it yourself","Pause, verify with the prescriber or pharmacist","Ask the patient to decide"],2]],
+"Accounting & Finance":[["Bookkeeping","A shop records a sale of KES 10,000 paid by cash. Which entry is correct?",["Debit Cash, Credit Sales","Debit Sales, Credit Cash","Debit Rent, Credit Cash","Credit Cash only"],0],
+["Reconciliation","Your bank statement differs from the cash book by KES 2,000. First step?",["Ignore it","Adjust the bank statement","Compare entries to find unrecorded items or errors","Delete the cash book"],2],
+["Compliance","A small business must remit tax collected from customers. Best practice:",["Keep it as extra profit","Record it separately and pay by the deadline","Pay only if audited","Spend it first and pay later"],1]],
+"Education & Teaching":[["Lesson design","A mixed-ability class struggles with a new topic. You:",["Teach faster","Use short activities at different levels and check understanding often","Give homework only","Skip the topic"],1],
+["Assessment","Which assessment best shows whether learners can apply a skill?",["Memorising definitions","A practical task with clear criteria","Attendance records","Teacher’s guess"],1],
+["Classroom management","Two learners keep disrupting group work. Best first response:",["Send them out permanently","Set clear expectations, give roles, and speak privately","Ignore them","Shout over them"],1]],
+"Supply Chain & Logistics":[["Inventory","A warehouse often runs out of fast-selling items but overstocks slow ones. Best fix?",["Order equal amounts of everything","Track demand and set reorder points per item","Stop ordering","Order randomly"],1],
+["Transport","A delivery to Garissa will arrive late due to road closure. You:",["Say nothing","Notify the customer, reroute, and update the schedule","Cancel the order","Blame the driver"],1],
+["Documentation","Goods arrive with fewer boxes than on the delivery note. You:",["Sign for all boxes","Note the shortage on the delivery note and report it","Throw away the note","Accept and say nothing"],1]]};
+const PATH={"Software & Cloud Tech":"Free Microsoft Azure Fundamentals (AZ-900) learning path or Google IT Support / Cloud Digital Leader certificate.","Healthcare & Nursing":"Nursing Council of Kenya bridging assessment plus a free WHO OpenWHO clinical refresher course.","Accounting & Finance":"Free KASNEB CPA Section 1 prep or Google Career Certificate in Data Analytics for finance roles.","Education & Teaching":"TSC/KICD orientation pathway and a free Coursera ‘Learning to Teach Online’ course.","Supply Chain & Logistics":"Free Google Supply Chain & Operations certificate or KISM introductory module."};
+const SAMPLES=[
+{id:"SB-KE-2026-8492",name:"Amina Hassan",loc:"Dadaab",prof:PROFS[0],yrs:4,role:"Software Developer & IT Trainer, university transcripts lost",skills:"4 years building web apps with JavaScript and Python. Trained 60+ youth in IT basics at a camp learning centre. Set up a school network and a student records app. Familiar with Git and cloud hosting.",ans:[1,0,1],score:92},
+{id:"SB-KE-2026-7310",name:"Peter Lokiru",loc:"Kakuma",prof:PROFS[1],yrs:6,role:"Clinic Nurse, certificate lost in displacement",skills:"6 years as a nurse in a camp clinic: triage, wound care, immunisation support, maternal health referrals and patient records.",ans:[2,1,2],score:94},
+{id:"SB-KE-2026-6125",name:"Fatuma Ali",loc:"Nairobi",prof:PROFS[2],yrs:5,role:"Accounts Clerk at a trading company",skills:"5 years keeping cash books, bank reconciliations, payroll and monthly reports for a small trading business using Excel.",ans:[0,2,0],score:73},
+{id:"SB-KE-2026-5048",name:"Joseph Deng",loc:"Kakuma",prof:PROFS[3],yrs:7,role:"Secondary School Teacher",skills:"7 years teaching mathematics and English to mixed-level classes, designing practical assessments and mentoring new teachers.",ans:[1,1,1],score:96},
+{id:"SB-KE-2026-4471",name:"Ahmed Warsame",loc:"Garissa",prof:PROFS[4],yrs:3,role:"Warehouse Supervisor",skills:"3 years managing stock counts, dispatch schedules and delivery notes for a regional distributor.",ans:[1,0,1],score:68}];
+const $=id=>document.getElementById(id);
+let cur=null,saved=[],mem={};
+try{saved=JSON.parse(localStorage.getItem("sbdir")||"[]")}catch(e){saved=[]}
+function persist(){try{localStorage.setItem("sbdir",JSON.stringify(saved))}catch(e){}}
+$("prof").innerHTML=PROFS.map(p=>`<option>${p}</option>`).join("");
+function tab(t){["cand","emp","samp"].forEach(x=>{$("v-"+x).classList.toggle("hide",x!==t);$("t-"+x).classList.toggle("on",x===t)});if(t==="emp")dirList();window.scrollTo(0,0)}
+function go(n){["p1","p2","p3"].forEach((p,i)=>$(p).classList.toggle("hide",i+1!==n));["s1","s2","s3"].forEach((s,i)=>$(s).className=i+1<n?"done":i+1===n?"on":"");if(n===1)window.scrollTo(0,$("steps").offsetTop-70)}
+function startFresh(){tab("cand");["name","yrs","role","skills"].forEach(i=>$(i).value="");$("dtxt").textContent="Optional: tap to upload any PDF or image (ID, letter, photo of a certificate)";$("e1").textContent="";go(1);$("name").focus()}
+function loadSample(i){const s=SAMPLES[i];tab("cand");$("name").value=s.name;$("loc").value=s.loc;$("prof").value=s.prof;$("yrs").value=s.yrs;$("role").value=s.role;$("skills").value=s.skills;$("e1").textContent="";go(1);$("dtxt").innerHTML='<span class="ok">✓ Sample transcript_scan.pdf: Document Metadata Scanned &amp; Analyzed</span>';window.scrollTo({top:$("steps").offsetTop-70,behavior:"smooth"})}
+$("file").onchange=e=>{const f=e.target.files[0];if(f)$("dtxt").innerHTML='<span class="ok">✓ '+esc(f.name)+': Document Metadata Scanned &amp; Analyzed</span>'};
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function toStep2(){const n=$("name").value.trim(),y=$("yrs").value,r=$("role").value.trim(),s=$("skills").value.trim();
+if(!n||y===""||!r||s.length<20){$("e1").textContent="Please complete your name, years of experience, previous role, and describe your skills (at least 20 characters).";return}
+$("e1").textContent="";const p=$("prof").value;$("qh").textContent="Competency Assessment: "+p;
+$("qs").innerHTML=Q[p].map((q,i)=>`<div class="q"><span class="tag">Q${i+1} · ${q[0]}</span><b>${q[1]}</b>`+q[2].map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")+`</div>`).join("");
+$("e2").textContent="";$("evalbox").classList.add("hide");$("qbtn").classList.remove("hide");go(2)}
+function level(s){return s>=85?["Mastery Level","Equivalent to KNQA Level 6 Diploma / Industry Ready"]:s>=70?["Proficient Level","Equivalent to KNQA Level 5 Certificate / Employable with Mentoring"]:["Developing Level","Equivalent to KNQA Level 4 Certificate / Bridging Training Recommended"]}
+function submitA(){const p=$("prof").value,a=Q[p].map((q,i)=>{const c=document.querySelector(`input[name=q${i}]:checked`);return c?+c.value:-1});
+if(a.includes(-1)){$("e2").textContent="Please answer all 3 questions.";return}
+$("e2").textContent="";$("qbtn").classList.add("hide");$("evalbox").classList.remove("hide");const pb=$("pb");pb.style.transition="none";pb.style.width="0";void pb.offsetWidth;pb.style.transition="width 1.5s linear";pb.style.width="100%";
+setTimeout(()=>{const ok=a.map((v,i)=>v===Q[p][i][3]?1:0),y=+$("yrs").value,sk=$("skills").value.trim().length;
+const score=Math.round(ok.reduce((x,b)=>x+b,0)/3*70+Math.min(y,8)/8*15+Math.min(sk,300)/300*15);
+let id;do{id="SB-KE-2026-"+(1000+Math.floor(Math.random()*9000))}while(find(id));
+cur={id,name:$("name").value.trim(),loc:$("loc").value,prof:p,yrs:y,role:$("role").value.trim(),score,ans:a,ok,date:new Date().toISOString().slice(0,10)};
+$("sv").textContent="";$("savebtn").disabled=false;$("pcard").innerHTML=passport(cur);go(3);window.scrollTo(0,0)},1500)}
+function find(id){id=id.trim().toUpperCase();return saved.find(r=>r.id===id)||SAMPLES.find(r=>r.id===id)}
+function oks(r){return r.ok||r.ans.map((v,i)=>v===Q[r.prof][i][3]?1:0)}
+function qr(id){let h=2166136261;for(const c of id){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}const N=21,cell=5;let o="";const fin=(x,y)=>{o+=`<rect x="${x*cell}" y="${y*cell}" width="35" height="35" fill="#0F172A"/><rect x="${x*cell+5}" y="${y*cell+5}" width="25" height="25" fill="#fff"/><rect x="${x*cell+10}" y="${y*cell+10}" width="15" height="15" fill="#0F172A"/>`};
+fin(0,0);fin(14,0);fin(0,14);for(let y=0;y<N;y++)for(let x=0;x<N;x++){if((x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12))continue;h^=h<<13;h^=h>>>17;h^=h<<5;if((h>>>0)%2)o+=`<rect x="${x*cell}" y="${y*cell}" width="5" height="5" fill="#0F172A"/>`}
+return `<svg viewBox="0 0 105 105" role="img" aria-label="Verification seal">${o}</svg>`}
+function passport(r,compact){const L=level(r.score),ok=oks(r);
+return `<div class="pass"><div class="top"><div><b>SkillBridge Digital Competency Passport</b><div style="font-size:12px;color:#94A3B8">Aligned to Kenya National Qualifications Framework (KNQA)</div></div><span class="badge">✓ VERIFIED</span></div>
+<div class="body"><div><div class="kv"><span>Candidate</span><b>${esc(r.name)}</b><span>Location</span><b>${esc(r.loc)}</b><span>Profession</span><b>${esc(r.prof)}</b><span>Verified Experience</span><b>${r.yrs} years · ${esc(r.role)}</b><span>Verification ID</span><b>${r.id}</b><span>Issued</span><b>${r.date||"2026-11-24"}</b></div>
+<div style="margin-top:16px"><div class="score">${r.score}%</div><b>${L[0]}</b><div style="color:var(--teal);font-weight:700">${L[1]}</div></div></div>
+<div class="seal">${qr(r.id)}<div>Scan or enter ID in<br>Employer Verification</div></div></div>
+<div class="bd"><b>Assessment breakdown</b>${Q[r.prof].map((q,i)=>`<div>${ok[i]?"✅":"⚠️"} ${q[0]}: ${ok[i]?"Competent":"Needs development"}</div>`).join("")}</div>
+<div class="bridge"><b>1-Step Bridging Recommendation:</b> ${PATH[r.prof]}</div>
+<div class="sdg"><b>SDG impact:</b> SDG 4 (recognising prior learning and skills) and SDG 8 (pathway to decent work and inclusive employment).</div></div>`}
+function saveDir(){if(!cur)return;if(!saved.find(r=>r.id===cur.id)){saved.push(cur);persist()}$("sv").textContent="✓ Saved. Employers can now verify "+cur.id+" in the Employer Verification tab.";$("savebtn").disabled=true}
+function lookup(){const id=$("vid").value.trim();$("vres").innerHTML="";const r=find(id);if(!id){$("ve").textContent="Enter a Verification ID.";return}
+if(!r){$("ve").textContent="No record found for "+id+". Check the ID format (SB-KE-2026-XXXX).";return}
+$("ve").textContent="";$("vres").innerHTML=`<div class="card"><div class="ok" style="margin-bottom:10px">✓ Record found and verified</div>${passport(r)}<div class="row noprint" style="margin-top:12px"><button class="btn" onclick="window.print()">Print</button></div></div>`}
+function dirList(){const all=[...SAMPLES,...saved];$("dirl").innerHTML=all.map(r=>`<button class="btn ghost" style="color:var(--teal)" onclick="$('vid').value='${r.id}';lookup()">${esc(r.name)} · ${r.id}</button>`).join("")}
+$("sg").innerHTML=SAMPLES.map((s,i)=>`<div class="pc"><b>${s.name}</b><div class="sub" style="margin:2px 0 8px">${s.prof} · ${s.loc} · ${s.yrs} yrs</div><div style="font-size:13px;margin-bottom:10px">${s.role}</div><span class="badge">${s.score}% · ${level(s.score)[0]}</span><div style="margin-top:10px"><button class="btn" onclick="loadSample(${i})">Load in Intake</button><button class="btn ghost" style="color:var(--teal)" onclick="tab('emp');$('vid').value='${s.id}';lookup()">View Passport</button></div></div>`).join("");
+dirList();
+</script></body></html>
