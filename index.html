@@ -45,6 +45,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--teal);border-col
 .row{display:flex;gap:8px;flex-wrap:wrap}.pc{border:1px solid var(--bd);border-radius:12px;padding:14px;background:var(--card)}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 .hide{display:none!important}.note{font-size:12px;color:var(--mut);margin-top:10px}
+.li{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--bd);font-size:14px;font-weight:500}.li input{width:auto;margin-top:4px}.pill{background:var(--soft);color:var(--teal);font-weight:700;border-radius:99px;padding:2px 10px;font-size:11px;margin-left:6px}.ph{border-left:4px solid var(--em);padding:6px 12px;margin-bottom:10px;font-size:14px}.ph b{display:block}
 @media print{header,.hero,.noprint,.steps,nav,.note{display:none!important}body{background:#fff}.card{border:0;padding:0}main{padding:0}}
 </style></head><body>
 <header><div class="bar"><div class="logo"><i></i>SkillBridge AI</div>
@@ -54,7 +55,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--teal);border-col
 <div class="hero noprint"><h1>Turn Lost Paperwork Into Verified Opportunity.</h1>
 <p>SkillBridge AI helps skilled refugees in Dadaab, Kakuma and Nairobi prove what they can do, even when certificates are missing, by mapping practical competency to Kenyan KNQA levels.</p>
 <button class="btn" onclick="startFresh()">Start Skills Verification</button><button class="btn em" onclick="loadSample(0)">Try Sample Refugee Profile</button>
-<div class="note" style="color:#94A3B8">Supporting SDG 4 (Quality Education) and SDG 8 (Decent Work). Hackathon prototype: scoring is simulated.</div></div>
+<div class="note" style="color:#94A3B8">Supporting SDGs 4, 8, 10, 16 and 17. Hackathon prototype: scoring is simulated.</div></div>
 <div class="steps" id="steps"><div id="s1" class="on">1 <span>Experience</span></div><div id="s2">2 <span>Assessment</span></div><div id="s3">3 <span>Passport</span></div></div>
 
 <div id="p1" class="card"><h2>Experience &amp; Prior Learning</h2><p class="sub">Tell us about your work history. No certificates needed.</p>
@@ -84,6 +85,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--teal);border-col
 <div class="row"><input id="vid" style="max-width:320px" placeholder="SB-KE-2026-8492" onkeydown="if(event.key==='Enter')lookup()"><button class="btn" onclick="lookup()">Verify</button></div><div id="ve" class="err"></div></div>
 <div id="vres"></div>
 <div class="card"><h2>Employer Directory</h2><p class="sub">Sample IDs and candidates saved from this session. Tap to verify.</p><div id="dirl" class="row"></div></div>
+<div class="card"><h2>Partner &amp; Scale Model</h2><p class="sub">How SkillBridge runs across cohorts, sectors and locations without heavy manual work.</p>
+<div class="ph"><b>Who does what</b>UN agencies (ILO, UNHCR) refer candidates and endorse passports. TVET centres and licensed assessors run practical validation. Employers verify IDs and hire. KNQA and regulators keep level mappings aligned.</div>
+<div class="ph"><b>Why it scales</b>Question banks are data, so adding a profession or camp means adding content, not code. Verification is self-service by ID, so employers need no phone calls or paper letters. One shared passport directory serves every settlement.</div>
+<div class="ph"><b>Roadmap</b>Phase 1 (this prototype): simulated scoring and local storage. Phase 2: pilot in Kakuma and Dadaab with human assessor review and a shared database. Phase 3: regional rollout with employer partners and official KNQA recognition.</div>
+<div class="note">Honest scope: the scoring here is a simulation. In production the Verified badge would require assessor or partner sign-off.</div></div>
 </section>
 
 <section id="v-samp" class="hide"><div class="card"><h2>Sample Profiles</h2><p class="sub">Verified demonstration profiles representing displaced professionals across Kenya. Load one into the intake form or view its verified passport.</p><div class="pgrid" id="sg"></div></div></section>
@@ -117,6 +123,14 @@ const $=id=>document.getElementById(id);
 let cur=null,saved=[],mem={};
 try{saved=JSON.parse(localStorage.getItem("sbdir")||"[]")}catch(e){saved=[]}
 function persist(){try{localStorage.setItem("sbdir",JSON.stringify(saved))}catch(e){}}
+const ROLES={"Software & Cloud Tech":[["Junior Cloud Support Engineer","Remote"],["IT Trainer, TVET college","Local"],["Freelance Web Developer","Remote"]],"Healthcare & Nursing":[["Community Health Nurse","Local"],["Clinic Triage Nurse","Local"],["Health Records Assistant","Local"]],"Accounting & Finance":[["Accounts Assistant","Local"],["Remote Bookkeeper (SME clients)","Remote"],["Payroll Clerk","Local"]],"Education & Teaching":[["Secondary School Teacher","Local"],["Online Tutor","Remote"],["Vocational Instructor","Local"]],"Supply Chain & Logistics":[["Warehouse Supervisor","Local"],["Logistics Coordinator","Local"],["Remote Inventory Analyst","Remote"]]};
+const REG={"Software & Cloud Tech":"build a public GitHub portfolio (no licence required)","Healthcare & Nursing":"Nursing Council of Kenya registration","Accounting & Finance":"ICPAK / KASNEB membership if practising","Education & Teaching":"Teachers Service Commission registration","Supply Chain & Logistics":"optional KISM membership"};
+const BR=["Enrol in the recommended pathway","Complete the course or assessment","Upload the new certificate to this passport"];
+const READY=p=>["Work authorization confirmed (refugee ID / work permit pathway, checked with the employer and UNHCR or DRS)","KYC-ready bank or mobile-money account (e.g. M-Pesa) registered with valid ID","Statutory onboarding: KRA PIN, NSSF and SHA registration","Professional registration: "+REG[p]];
+let prog={};try{prog=JSON.parse(localStorage.getItem("sbprog")||"{}")}catch(e){}
+SAMPLES.forEach((s,i)=>{if(!((s.id+"b0") in prog)){prog[s.id+"b0"]=1;prog[s.id+"w0"]=1;if(i%2===0){prog[s.id+"b1"]=1;prog[s.id+"w1"]=1}}});
+function tog(k,v){prog[k]=v;try{localStorage.setItem("sbprog",JSON.stringify(prog))}catch(e){}}
+function chk(r,g,items,ro){return items.map((t,i)=>{const k=r.id+g+i;return `<label class="li"><input type="checkbox" ${prog[k]?"checked":""} ${ro?"disabled":""} onchange="tog('${k}',this.checked)"> ${t}</label>`}).join("")}
 $("prof").innerHTML=PROFS.map(p=>`<option>${p}</option>`).join("");
 function tab(t){["cand","emp","samp"].forEach(x=>{$("v-"+x).classList.toggle("hide",x!==t);$("t-"+x).classList.toggle("on",x===t)});if(t==="emp")dirList();window.scrollTo(0,0)}
 function go(n){["p1","p2","p3"].forEach((p,i)=>$(p).classList.toggle("hide",i+1!==n));["s1","s2","s3"].forEach((s,i)=>$(s).className=i+1<n?"done":i+1===n?"on":"");if(n===1)window.scrollTo(0,$("steps").offsetTop-70)}
@@ -143,18 +157,20 @@ function oks(r){return r.ok||r.ans.map((v,i)=>v===Q[r.prof][i][3]?1:0)}
 function qr(id){let h=2166136261;for(const c of id){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}const N=21,cell=5;let o="";const fin=(x,y)=>{o+=`<rect x="${x*cell}" y="${y*cell}" width="35" height="35" fill="#0F172A"/><rect x="${x*cell+5}" y="${y*cell+5}" width="25" height="25" fill="#fff"/><rect x="${x*cell+10}" y="${y*cell+10}" width="15" height="15" fill="#0F172A"/>`};
 fin(0,0);fin(14,0);fin(0,14);for(let y=0;y<N;y++)for(let x=0;x<N;x++){if((x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12))continue;h^=h<<13;h^=h>>>17;h^=h<<5;if((h>>>0)%2)o+=`<rect x="${x*cell}" y="${y*cell}" width="5" height="5" fill="#0F172A"/>`}
 return `<svg viewBox="0 0 105 105" role="img" aria-label="Verification seal">${o}</svg>`}
-function passport(r,compact){const L=level(r.score),ok=oks(r);
+function passport(r,ro){const L=level(r.score),ok=oks(r);
 return `<div class="pass"><div class="top"><div><b>SkillBridge Digital Competency Passport</b><div style="font-size:12px;color:#94A3B8">Aligned to Kenya National Qualifications Framework (KNQA)</div></div><span class="badge">✓ VERIFIED</span></div>
 <div class="body"><div><div class="kv"><span>Candidate</span><b>${esc(r.name)}</b><span>Location</span><b>${esc(r.loc)}</b><span>Profession</span><b>${esc(r.prof)}</b><span>Verified Experience</span><b>${r.yrs} years · ${esc(r.role)}</b><span>Verification ID</span><b>${r.id}</b><span>Issued</span><b>${r.date||"2026-11-24"}</b></div>
 <div style="margin-top:16px"><div class="score">${r.score}%</div><b>${L[0]}</b><div style="color:var(--teal);font-weight:700">${L[1]}</div></div></div>
 <div class="seal">${qr(r.id)}<div>Scan or enter ID in<br>Employer Verification</div></div></div>
 <div class="bd"><b>Assessment breakdown</b>${Q[r.prof].map((q,i)=>`<div>${ok[i]?"✅":"⚠️"} ${q[0]}: ${ok[i]?"Competent":"Needs development"}</div>`).join("")}</div>
-<div class="bridge"><b>1-Step Bridging Recommendation:</b> ${PATH[r.prof]}</div>
-<div class="sdg"><b>SDG impact:</b> SDG 4 (recognising prior learning and skills) and SDG 8 (pathway to decent work and inclusive employment).</div></div>`}
+<div class="bridge"><b>1-Step Bridging Recommendation:</b> ${PATH[r.prof]}<div style="margin-top:8px"><b>Bridging progress tracker</b>${chk(r,"b",BR,ro)}</div></div>
+<div class="bd"><b>Work readiness checklist (access &amp; compliance)</b>${chk(r,"w",READY(r.prof),ro)}<div class="note">Requirements change: confirm current rules with UNHCR, DRS or the employer.</div></div>
+<div class="bd"><b>Employer match (sample roles)</b>${r.score>=70?ROLES[r.prof].map(x=>`<div>${x[0]}<span class="pill">${x[1]=="Remote"?"Remote-ready":"Local on-site"}</span></div>`).join(""):"<div>Complete the bridging steps above and retake the assessment to unlock role matches.</div>"}</div>
+<div class="sdg"><b>SDG impact:</b> SDG 4 (recognising prior learning and skills), SDG 8 (pathway to decent work), SDG 10 (reduced inequalities for displaced talent), SDG 16 (trusted, verifiable credentials) and SDG 17 (partnerships between UN agencies, TVET centres and employers).</div></div>`}
 function saveDir(){if(!cur)return;if(!saved.find(r=>r.id===cur.id)){saved.push(cur);persist()}$("sv").textContent="✓ Saved. Employers can now verify "+cur.id+" in the Employer Verification tab.";$("savebtn").disabled=true}
 function lookup(){const id=$("vid").value.trim();$("vres").innerHTML="";const r=find(id);if(!id){$("ve").textContent="Enter a Verification ID.";return}
 if(!r){$("ve").textContent="No record found for "+id+". Check the ID format (SB-KE-2026-XXXX).";return}
-$("ve").textContent="";$("vres").innerHTML=`<div class="card"><div class="ok" style="margin-bottom:10px">✓ Record found and verified</div>${passport(r)}<div class="row noprint" style="margin-top:12px"><button class="btn" onclick="window.print()">Print</button></div></div>`}
+$("ve").textContent="";$("vres").innerHTML=`<div class="card"><div class="ok" style="margin-bottom:10px">✓ Record found and verified</div>${passport(r,1)}<div class="row noprint" style="margin-top:12px"><button class="btn" onclick="window.print()">Print</button></div></div>`}
 function dirList(){const all=[...SAMPLES,...saved];$("dirl").innerHTML=all.map(r=>`<button class="btn ghost" style="color:var(--teal)" onclick="$('vid').value='${r.id}';lookup()">${esc(r.name)} · ${r.id}</button>`).join("")}
 $("sg").innerHTML=SAMPLES.map((s,i)=>`<div class="pc"><b>${s.name}</b><div class="sub" style="margin:2px 0 8px">${s.prof} · ${s.loc} · ${s.yrs} yrs</div><div style="font-size:13px;margin-bottom:10px">${s.role}</div><span class="badge">${s.score}% · ${level(s.score)[0]}</span><div style="margin-top:10px"><button class="btn" onclick="loadSample(${i})">Load in Intake</button><button class="btn ghost" style="color:var(--teal)" onclick="tab('emp');$('vid').value='${s.id}';lookup()">View Passport</button></div></div>`).join("");
 dirList();
